@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "args": ["/Users/todda/Library/Application Support/Steam/steamapps/common/Baldurs Gate 3/Baldur's Gate 3.app/Contents/Data/Gustav_Video.pak",
+                     "extract", "1"],
+            //"args": ["/Users/todda/Library/Application Support/Steam/steamapps/common/Baldurs Gate 3/Baldur's Gate 3.app/Contents/Data/Localization/Voice.pak",
+            // "extract", "2"],
+
+            //"args": ["extracted/Localization/English/english.loca"],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        }
+    ]
+}
