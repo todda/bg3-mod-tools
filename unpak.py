@@ -33,7 +33,7 @@ def printUsage():
     print('USAGE:\n    bg3-unpak [options] <input.pak>')
     print('    options:')
     print('        print - print out the listing of embedded files')
-    print('        extract[number] - extract embedded file data default is all files')
+    print('        extract[number:number] - extract embedded file data default is all files')
     print('        verbose - print out extra PAK information and operation warnings')
 
 def readHeader(input):
@@ -189,8 +189,12 @@ with open(file=fileName, mode="rb") as inputFile:
     if sys.argv.__contains__("extract"):
         argIndex = sys.argv.index("extract") + 1
         try:
-            startIndex = int(sys.argv[argIndex])
-            endIndex = int(sys.argv[argIndex]) + 1
+            if ':' in sys.argv[argIndex]:
+                startIndex = int(sys.argv[argIndex].split(':')[0])
+                endIndex = int(sys.argv[argIndex].split(':')[1])
+            else:
+                startIndex = int(sys.argv[argIndex])
+                endIndex = int(sys.argv[argIndex]) + 1
         except:
             startIndex = 0
             endIndex = len(pakFileList)
