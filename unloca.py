@@ -54,6 +54,7 @@ class LocaleEntry:
     key = bytes(64)
     version: ctypes.c_uint16 = 0
     length: ctypes.c_uint32 = 0
+    offset: ctypes.c_uint32 = 0
 
 def readHeader(input):
     returnHeader: LocaleHeader = LocaleHeader()
@@ -61,6 +62,28 @@ def readHeader(input):
     returnHeader.entries = int.from_bytes(input.read(4), "little")
     returnHeader.textOffset = int.from_bytes(input.read(4), "little")
     return returnHeader
+
+def readAllUids(input, header: LocaleHeader):
+    returnEntries = []
+    accumulatedOffset = 0
+
+    for currentEntry in range(0, header.entries+1):
+        returnEntry = LocaleEntry()
+        input.seek((currentEntry*(64+2+4)) + 12)
+        returnEntry.key = input.read(64)
+        returnEntry.version = int.from_bytes(input.read(2), "little")
+        returnEntry.length = int.from_bytes(input.read(4), "little")
+        returnEntry.offset = accumulatedOffset
+        accumulatedOffset += returnEntry.length
+        returnEntries.append(returnEntry)
+
+    return returnEntries
+
+def createEntryFrom(input, header: LocaleHeader, uids: [LocaleEntry], index):
+    input.seek(header.textOffset + uids[index].offset)
+    if verbose:
+        uid = uids[index].key.decode('UTF-8').rstrip('\x00')
+        print(f'<content contentuid="{uid}" version="{uids[index].version}">{input.read(uids[index].length).decode("UTF-8")}</content>')
 
 def readEntry(input, header: LocaleHeader, index):
     returnEntry: LocaleEntry = LocaleEntry()
@@ -76,7 +99,8 @@ def readEntry(input, header: LocaleHeader, index):
 
     input.seek(header.textOffset + accumulatedOffset)
     if verbose:
-        print(f'<content contentuid="{returnEntry.key.decode("UTF-8")}" version="{returnEntry.version}">{input.read(returnEntry.length).decode("UTF-8")}</content>')
+        uid = returnEntry.key.decode('UTF-8').rstrip('\x00')
+        print(f'<content contentuid="{uid}" version="{returnEntry.version}">{input.read(returnEntry.length).decode("UTF-8")}</content>')
 
     return returnEntry
 
@@ -91,8 +115,9 @@ with open(file=fileName, mode="rb") as inputFile:
     print('found', header.entries, 'entries')
 
     print('<contentList>')
+    uids = readAllUids(inputFile, header)
     for entryNumber in range(0, header.entries):
-        readEntry(inputFile, header, entryNumber)
+        createEntryFrom(inputFile, header, uids, entryNumber)
     print('</contentList>')
 
 print('completed')

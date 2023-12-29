@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 extracted/
 .DS_Store
+*.txt

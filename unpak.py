@@ -132,6 +132,7 @@ def extractPakElement(inputFile, pakFileData, index):
 
         print('extracting file', fileObject.name)
         if ((fileObject.flags & 0x0F) == 2):
+            print('file is lz4 compressed', len(compressedBytes))
             decompressedBytesToExtract = decompressData(compressedBytes, fileObject.uncompressedSize)
         elif ((fileObject.flags & 0x0F) == 3):
             print('file is zlib compressed', len(compressedBytes))
