@@ -12,6 +12,17 @@
 #     metadata from: Audiokinetic Wwise RIFF header
 #     bitrate: 47 kbps
 #
+#   Localization/English/Soundbanks/vcb3b1e87b8a943e5ae99b698dba67c25_hffce03afg32a0g40f2gb806gcf916df48203.wem
+#
+#   WEM Files are named by <actor>_<localization_xml_contentuid>.wem
+#
+#   Actor id's are:
+#       vNARRATOR - Main Narrator
+#       vc774d7644a1748dcb47032ace9ce447d - Wyll
+#       v7628bc0e52b842a7856a13a6fd413323 - Halsin
+#       v3ed74f063c6042dc83f6f034cb47c679 - Shadowheart
+#       v0de603c542e248119dadf652de080eba - Minsc
+#
 #  Conversion is best handled with the vgmstream-cli utility
 
 import os
